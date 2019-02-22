@@ -1,0 +1,25 @@
+CREATE DATABASE `hw3_base` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+CREATE TABLE `clients` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(45) NOT NULL,
+  `cost` decimal(20,0) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `trade_table` (
+  `id_clients` int(11) NOT NULL,
+  `id_goods` int(11) NOT NULL,
+  `curr_cost` decimal(20,0) NOT NULL,
+  PRIMARY KEY (`id_clients`,`id_goods`),
+  KEY `id_clients_idx` (`id_clients`),
+  KEY `id_goods_idx` (`id_goods`),
+  CONSTRAINT `id_clients` FOREIGN KEY (`id_clients`) REFERENCES `clients` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `id_goods` FOREIGN KEY (`id_goods`) REFERENCES `goods` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
