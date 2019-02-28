@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+
+    <title>Стартовая страница</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <meta name="ctx" th:content="${#httpServletRequest.getContextPath()}"/>
+</head>
+
+<body>
+
+<div class="container">
+    <br>
+    <h1>Стартовая страница</h1>
+    <form th:action="@{/filter}" method="post">
+        <div class="form-group">
+            <label for="from">Цена от:</label>
+            <input th:name="from" type="text"  class="form-control" id="from" th:value="${from}">
+        </div>
+        <div class="form-group">
+            <label for="to">Цена до:</label>
+            <input th:name="to" type="text" class="form-control" id="to" th:value="${to}">
+        </div>
+        <button type="submit" class="btn btn-primary">Отобрать</button>
+    </form>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Стоимость</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="good : ${goods}">
+            <td th:text="${good.id}"/>
+            <td th:text="${good.title}"/>
+            <td th:text="${good.cost}"/>
+            <td>
+                <a th:href="@{'/edit/' + ${good.id}}" th:text="Редактировать"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example" th:with="begin=${4*(numb / 4)}">
+        <ul class="pagination">
+            <li th:unless="${numb == 0}" class="page-item"><a class="page-link" th:href="@{'/' + ${numb-1}+'/params?'+${params}}">Previous</a></li>
+
+            <li class="page-item" th:each="i : ${#numbers.sequence({4*(numb / 4) == 0} ? 4*(numb / 4)+1 : 4*(numb / 4), {4*(numb / 4) + 5 > totalPg} ? totalPg : 4*(numb / 4) + 5)}" th:classAppend="${i == numb+1} ? 'page-item active' : ''">
+                <a class="page-link" th:text="${i}" th:href="@{'/' + ${i-1}+'/params?'+${params}}" />
+            </li>
+
+            <li th:unless="${numb == totalPg - 1}" class="page-item"><a class="page-link" th:href="@{'/' + ${numb+1}+'/params?'+${params}}">Next</a></li>
+        </ul>
+    </nav>
+</div>
+
+</body>
+</html>
